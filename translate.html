@@ -31,6 +31,8 @@ button:hover{background:var(--purple-dark)}
 .status{margin-top:8px;color:#444}
 textarea[readonly]{background:#f5f5f7}
 .chip{display:inline-block;padding:3px 8px;border:1px solid #ddd;border-radius:12px;margin-right:6px;margin-top:4px;cursor:pointer;}
+#speakButton{padding:10px;border-radius:10px;cursor:pointer;background:var(--purple);color:#fff;font-weight:700;}
+#speakButton:hover{background:var(--purple-dark);}
 </style>
 </head>
 <body>
@@ -86,10 +88,11 @@ textarea[readonly]{background:#f5f5f7}
   <div class="status" id="status"></div>
 
   <label style="margin-top:14px">Translation Result</label>
-  <div style="display:flex; align-items:center; gap:8px;">
+  <div style="display:flex; gap:8px; align-items:flex-start;">
     <textarea id="outputText" rows="4" readonly></textarea>
     <button id="speakButton" title="Speak translation">🔊</button>
   </div>
+
   <div id="alts"></div>
 
   <div style="margin-top:14px">
@@ -103,10 +106,8 @@ textarea[readonly]{background:#f5f5f7}
 /* ====== CURATED OVERRIDES ====== */
 const OVERRIDES = { 
 hi:{"hello":["नमस्ते","हैलो"],"hi":["नमस्ते","हाय"],"thanks":["धन्यवाद"],"thank you":["धन्यवाद"],"sorry":["माफ़ कीजिए"],"please":["कृपया"],"good morning":["सुप्रभात"],"good night":["शुभ रात्रि"]},
-te:{"hello":["నమస్తే","హలో","నమస్కారం"],"hi":["నమస్తే","హాయ్"],"thanks":["ధన్యవాదాలు"],"thank you":["ధన్యవాదాలు"],"sorry":["క్షమించండి"],"please":["దయచేసి"],"good morning":["శుభోదయం"],"good night":["శుభ రాత్రి"]}, 
+te:{"hello":["నమస్తే","హలో","నమస్కారం"],"hi":["నమస్తే","హాయ్"],"thanks":["ధన్యవాదాలు"],"thank you":["ధన్యవాదాలు"],"sorry":["క్షమించండి"],"please":["దయచేసి"],"good morning":["శుభోదయం"],"good night":["శుభ రాత్రి"]}
 };
-
-/* ====== HELPER FUNCTIONS ====== */
 function looksEnglish(s){ return /^[\x00-\x7F]+$/.test(s); }
 function applyOverrides(q, target, style) {
   const key=q.toLowerCase().trim(), dict=OVERRIDES[target];
@@ -191,7 +192,7 @@ document.getElementById("translateButton").addEventListener("click",async()=>{
   } else {status.textContent="Translation failed. Try again later.";}
 });
 
-/* ====== VOICE INPUT ====== */
+/* ====== VOICE INPUT FEATURE ====== */
 let recognition, recognizing=false;
 function setStatus(msg){document.getElementById('status').textContent=msg;}
 document.getElementById('voiceButton').addEventListener('click',()=>{
@@ -232,7 +233,7 @@ document.getElementById('voiceButton').addEventListener('click',()=>{
   };
 });
 
-/* ====== TEXT TO SPEECH ====== */
+/* ====== TEXT-TO-SPEECH FEATURE ====== */
 document.getElementById('speakButton').addEventListener('click', () => {
   const text = document.getElementById('outputText').value.trim();
   if (!text) {
